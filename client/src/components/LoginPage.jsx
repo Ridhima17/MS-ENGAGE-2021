@@ -14,10 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {ToastContainer, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-toast.configure();
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -58,12 +55,9 @@ const LoginPage = () => {
       });
       const data = res.json();
       if(!data){
-          // window.alert("Invalid Credential");
-          toast("Invalid Credential");
+          Window.alert("Invalid Credential");
       }else{
-          // window.alert("Login Successful");
-          toast("Login Successful");
-          history.push("/");
+          Window.alert("Login Successful");
       }
   }  
 
@@ -129,7 +123,6 @@ const LoginPage = () => {
           </form>
         </div>
       </Container>
-      <ToastContainer/>
     </>
   );
 }
