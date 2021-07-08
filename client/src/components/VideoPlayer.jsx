@@ -14,6 +14,7 @@ import {socket} from "../Context/VideoState";
 import { io } from 'socket.io-client';
 import { useEffect,useRef,useState } from 'react';
 import Modal from 'react-modal';
+import {useHistory} from 'react-router-dom';
 import { Button, notification, Input} from 'antd';
 
 
@@ -45,12 +46,12 @@ const useStyles = makeStyles((theme) => ({
     chatDiv:{
       display: 'grid',
       placeItems: 'center',
-      height: '15rem'
+      height: '27rem',
     },
     input_message:{
       fontFamily: 'Gilroy-light',
       fontWeight: 'bold',
-      marginTop: '1rem'
+      marginTop: '1rem',
     },
     BoxForAvatar:{
       display: 'flex',
@@ -58,11 +59,47 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       width: '550px',
       position: 'relative',
+    },
+    msg_sent:{
+      alignSelf: 'flex-end',
+    },
+    msg_flex:{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      height: '100%',
     }
 }));
 
 const {Search} = Input;
 const VideoPlayer = () => {
+
+  // const history = useHistory();
+  // const callVideoPage = async () => {
+  //   try{
+  //     const res = fetch('/videochat',{
+  //       method: "GET",
+  //       headers: {
+  //         "Accept": "application/json",
+  //         "Content-Type": "application/json"
+  //       },
+  //       credentials: "include"
+  //     });
+  //     const data = await res.json();
+  //     if(!res.status === 200 || !data){
+  //       const error = new Error(res.error);
+  //       throw error;
+  //     }
+  //   }catch (err){
+  //     console.log(err);
+  //     history.push('/signin');
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   callVideoPage();
+  // },[]);
+
     const classes = useStyles();
     const { name, callAccepted, myVideo, userVideo, callEnded, stream, call, chat, setChat, msgRcv, sendMsg:sendMsgFunc, userName, myVideoStatus, userVideoStatus, myAudioStatus, userAudioStatus, updateVideo, updateAudio } = useContext(VideoContext);
     const [sendMsg,setSendMsg] = useState("");
@@ -126,14 +163,14 @@ const VideoPlayer = () => {
                       {  callAccepted && !callEnded && (
                         <div>
                             <Fab onClick={() => setIsModalVisible(true)} tabIndex="1"><ChatIcon/></Fab>
-                            <Modal isOpen={isModalVisible} onRequestClose={() => setIsModalVisible(false)}>
+                            <Modal isOpen={isModalVisible} onRequestClose={() => setIsModalVisible(false)} style={{maxHeight: '100px'}}>
                               <h1 align="center"> Chat Messenger </h1>
                               {
                                 chat.length ? (
-                                  <div className="msg_flex">
+                                  <div className={classes.msg_flex}>
                                     {
                                       chat.map((msg) => (
-                                        <div> {msg.msg} </div>
+                                        <div className={msg.type === "sent" ? classes.msg_sent : classes.msg_rcv}> {msg.msg} </div>
                                       ))
                                     }
                                     <div ref={dummy}></div>

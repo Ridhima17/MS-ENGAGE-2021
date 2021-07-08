@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const server = require("http").createServer(app);
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
 const mongoose = require("mongoose");
 const routeUrls = require("./route/auth.routes");
 require("dotenv").config({path:'./config.env'});
@@ -16,6 +19,14 @@ const io = require("socket.io")(server,{
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(session({
+    secret: 'secret',
+    cookie:{maxAge: 60000},
+    resave:false,
+    saveUninitialized: false
+}));
+app.use(flash());
 app.use(cors());
 app.use('/',routeUrls);
 
@@ -34,12 +45,13 @@ io.on('connection',(socket)=>{  //sockets are used for real time data transmissi
         io.to(userToCall).emit("calluser",{signal: signalData, from, name});
     });
 
-    //update the user media here -> controls options 
+    //updating the user media here -> controls options 
     socket.on("updateMyMedia",({type,currentMediaStatus}) => {
         console.log("updateMyMedia");
         socket.broadcast.emit("updateUserMedia",({type,currentMediaStatus}));
     });
 
+    //chat socket
     socket.on("msgUser",({name,to, msg, sender}) => {
         io.to(to).emit("msgRcv",{name,msg,sender});
     });

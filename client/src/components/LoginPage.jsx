@@ -1,5 +1,3 @@
-
-
 import React, {useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
@@ -53,11 +51,12 @@ const LoginPage = () => {
                 email,password
           })
       });
-      const data = res.json();
-      if(!data){
-          Window.alert("Invalid Credential");
+      const data = await res.json();
+      if(!res.status === 400){
+        history.push("/videochat");
+        window.alert("Login Successful");
       }else{
-          Window.alert("Login Successful");
+        window.alert("Invalid Credential");
       }
   }  
 
