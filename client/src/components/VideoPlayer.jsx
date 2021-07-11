@@ -11,12 +11,9 @@ import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import ChatIcon from '@material-ui/icons/Chat';
 import VideoContext from '../Context/VideoContext';
 import {socket} from "../Context/VideoState";
-import { io } from 'socket.io-client';
 import { useEffect,useRef,useState } from 'react';
 import Modal from 'react-modal';
-import {useHistory} from 'react-router-dom';
 import { Button, notification, Input} from 'antd';
-
 
 Modal.setAppElement('#root')
 const useStyles = makeStyles((theme) => ({
@@ -73,32 +70,6 @@ const useStyles = makeStyles((theme) => ({
 
 const {Search} = Input;
 const VideoPlayer = () => {
-
-  // const history = useHistory();
-  // const callVideoPage = async () => {
-  //   try{
-  //     const res = fetch('/videochat',{
-  //       method: "GET",
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Content-Type": "application/json"
-  //       },
-  //       credentials: "include"
-  //     });
-  //     const data = await res.json();
-  //     if(!res.status === 200 || !data){
-  //       const error = new Error(res.error);
-  //       throw error;
-  //     }
-  //   }catch (err){
-  //     console.log(err);
-  //     history.push('/signin');
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   callVideoPage();
-  // },[]);
 
     const classes = useStyles();
     const { name, callAccepted, myVideo, userVideo, callEnded, stream, call, chat, setChat, msgRcv, sendMsg:sendMsgFunc, userName, myVideoStatus, userVideoStatus, myAudioStatus, userAudioStatus, updateVideo, updateAudio } = useContext(VideoContext);
@@ -160,7 +131,7 @@ const VideoPlayer = () => {
                           )
                         }
                       </div>
-                      {  callAccepted && !callEnded && (
+                      {  callAccepted && !callEnded && ( // for chat application
                         <div>
                             <Fab onClick={() => setIsModalVisible(true)} tabIndex="1"><ChatIcon/></Fab>
                             <Modal isOpen={isModalVisible} onRequestClose={() => setIsModalVisible(false)} style={{maxHeight: '100px'}}>

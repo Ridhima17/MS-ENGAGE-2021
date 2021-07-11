@@ -47,9 +47,6 @@ const Home = () => {
                       <li class="nav-item">
                         <a class="nav-link" href="http://localhost:3000/signup">SIGN UP</a>
                       </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/videochat">VIDEO CALL</a>
-                      </li>
                   </ul>
               </div>
         </nav>

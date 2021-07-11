@@ -1,12 +1,10 @@
 const express = require('express');
-// const jwt = require('jsonwebtoken');
 const router = express.Router();
 const signUpTemplateCopy = require('../model/user.model');
 const bcrypt = require('bcryptjs');
-// const authenticate = require("../middleware/authenticate");
 
 
-//using the async method (Advanced Javascript)
+//post data to db after signup
 router.post('/signup', async (request,response) => {
     const {name,email,phoneNumber,password,confirmPassword} = request.body;
     if(!name || !email || !phoneNumber || !password || !confirmPassword){
@@ -37,7 +35,6 @@ router.post('/signup', async (request,response) => {
 //using async - await method (Advanced Javascript)
 router.post('/signin',async (request,response) => {
     try{
-        // let token;
         const {email,password} = request.body;
         if(!email ||  !password){
             return response.status(400).json({error: "Please enter valid details, try again"});
@@ -46,16 +43,9 @@ router.post('/signin',async (request,response) => {
 
         if(userLogin){
             const isMatch = await bcrypt.compare(password,userLogin.password);
-            // token = await userLogin.generateAuthToken();
-            // response.cookie("jwtoken",token, {
-            //     expires: new Date(Date.now() + 25892000000),
-            //     httpOnly: true
-            // });
             if(!isMatch){
                 return response.status(400).json({error: "User error, try again"});
             }else{
-                // return response.json({message: "User signin successfully"});
-                // request.flash('message','Saved successfully');
                 response.redirect('http://localhost:3000/videochat');
             }
 
@@ -67,8 +57,5 @@ router.post('/signin',async (request,response) => {
     }
 });
 
-// router.get('/videochat', (req,res) => {
-//     res.render()
-// });
 
 module.exports = router;
