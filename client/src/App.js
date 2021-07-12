@@ -13,7 +13,7 @@ import SignUp from './components/SignUp';
 import LoginPage from './components/LoginPage';
 import Home from './components/Home';
 
-
+//inline styles
 const useStyles = makeStyles((theme)=>({
       wrapper: {
         display: 'flex',

@@ -3,8 +3,6 @@ const app = express();
 const server = require("http").createServer(app);
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const flash = require('connect-flash');
 const mongoose = require("mongoose");
 const routeUrls = require("./route/auth.routes");
 require("dotenv").config({path:'./config.env'});
@@ -20,15 +18,9 @@ const io = require("socket.io")(server,{
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(session({
-    secret: 'secret',
-    cookie:{maxAge: 60000},
-    resave:false,
-    saveUninitialized: false
-}));
-app.use(flash());
 app.use(cors());
 app.use('/',routeUrls);
+
 
 app.get('/', function (req,res){
     res.send('hello world')

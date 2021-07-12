@@ -13,15 +13,17 @@ router.post('/signup', async (request,response) => {
     try{
         const userExist = await signUpTemplateCopy.findOne({email:email});
         if(userExist){
-            return response.status(422).json({error: "Email already exists"});
+            return response.status(422).json({error: "Email already exists,head to sign in"});
         }else if(password != confirmPassword){
             return response.status(422).json({error: "Passwords do not match"});
         }else{
-            const signedUpUser = new signUpTemplateCopy({name,email,phoneNumber,password,confirmPassword});
+            const salt = await bcrypt.genSalt(10);
+            const passwordHash = await bcrypt.hash(password,salt);
+            const signedUpUser = new signUpTemplateCopy({name,email,phoneNumber,passwordHash,confirmPassword});
             const userRegister = await signedUpUser.save();
             if(userRegister){
-                // return response.status(201).json({message: "Sign Up successfull"});
-                response.redirect('/signin');
+                return response.status(201).json({message: "Sign Up successfull"});
+                // response.redirect('/signin');
             }else{
                 return response.status(500).json({message: "Failed to register"});
             }
@@ -42,7 +44,7 @@ router.post('/signin',async (request,response) => {
         const userLogin = await signUpTemplateCopy.findOne({email:email});
 
         if(userLogin){
-            const isMatch = await bcrypt.compare(password,userLogin.password);
+            const isMatch = await bcrypt.compare(userLogin.password,password);
             if(!isMatch){
                 return response.status(400).json({error: "User error, try again"});
             }else{
