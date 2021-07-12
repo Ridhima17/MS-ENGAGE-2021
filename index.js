@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require("mongoose");
 const routeUrls = require("./route/auth.routes");
+const path = require('path');
 require("dotenv").config({path:'./config.env'});
 require('./db/conn');
 const cors = require("cors");
@@ -21,10 +22,6 @@ app.use(cookieParser());
 app.use(cors());
 app.use('/',routeUrls);
 
-
-app.get('/', function (req,res){
-    res.send('hello world')
-})
 
 //backend of things
 io.on('connection',(socket)=>{  //sockets are used for real time data transmissions that can be messages,audio or video
@@ -59,4 +56,12 @@ io.on('connection',(socket)=>{  //sockets are used for real time data transmissi
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT,() => console.log(`Server listening on port ${PORT}`));
+
+//Production setup
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+    app.get('*',(req,res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    });
+}
 
