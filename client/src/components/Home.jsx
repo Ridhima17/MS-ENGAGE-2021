@@ -42,11 +42,14 @@ const Home = () => {
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav ms-auto">
-                      <li class="nav-item">
+                      {/* <li class="nav-item">
                         <a class="nav-link" href="http://localhost:3000/signin">LOGIN</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" href="http://localhost:3000/signup">SIGN UP</a>
+                      </li> */}
+                      <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:3000/videochat">VIDEO CALL</a>
                       </li>
                   </ul>
               </div>

@@ -22,8 +22,7 @@ router.post('/signup', async (request,response) => {
             const signedUpUser = new signUpTemplateCopy({name,email,phoneNumber,passwordHash,confirmPassword});
             const userRegister = await signedUpUser.save();
             if(userRegister){
-                return response.status(201).json({message: "Sign Up successfull"});
-                // response.redirect('/signin');
+                response.redirect('/signin');
             }else{
                 return response.status(500).json({message: "Failed to register"});
             }
@@ -44,7 +43,7 @@ router.post('/signin',async (request,response) => {
         const userLogin = await signUpTemplateCopy.findOne({email:email});
 
         if(userLogin){
-            const isMatch = await bcrypt.compare(userLogin.password,password);
+            const isMatch = await bcrypt.compare(password,userLogin.password);
             if(!isMatch){
                 return response.status(400).json({error: "User error, try again"});
             }else{
